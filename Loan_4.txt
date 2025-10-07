@@ -1,0 +1,90 @@
+#include <iostream>
+
+using namespace std;
+class loan
+{
+
+    public:
+        loan(): principle(0), period(0), emi(0){} 
+
+        double Getprinciple()
+        {
+            return principle;
+        }
+
+        void Setprinciple(double p)
+        {
+            principle = p;
+        }
+
+        float Getperiod()
+        {
+            return period;
+        }
+        
+        void Setperiod(float n)
+        {
+            period =n;
+        }
+        
+        virtual float Getrate() const = 0;
+        
+        double GetEMI()
+        {
+            double p =  principle;
+            float n = period;
+            float r = Getrate();
+            double emi = p * (1 + r * n / 100) / (12 * n);
+            return emi;
+        }
+
+    protected:
+    double principle;
+    float period,emi;
+};
+
+
+
+class PersonalLoan : public loan
+{
+    public:
+    PersonalLoan() {}
+    float Getrate() const
+    {
+        return principle < 500000 ? 0.15f : 0.16f;
+    }
+
+};
+
+
+
+
+class Homeloan : public loan
+{
+    public:
+    Homeloan() {}
+    float Getrate() const
+    {
+        return principle < 2000000 ? 0.10f : 0.11f;
+    }
+
+};
+
+
+
+
+int main(void)
+{
+    PersonalLoan p1;
+    p1.Setprinciple(5000000);
+    p1.Setperiod(5);
+
+    cout << "Personal Loan EMI :" << p1.GetEMI() << endl;
+
+    Homeloan h1;
+    h1.Setprinciple(6000000);
+    h1.Setperiod(10);
+
+    cout<< "Homeloan Loan EMI :" << h1.GetEMI() << endl;
+
+}
